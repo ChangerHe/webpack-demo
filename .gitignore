@@ -1,0 +1,15 @@
+.DS_Store
+node_modules/*
+npm-debug.log
+public/build/*
+.swp
+.swo
+webpack-assets.json
+.idea
+yarn-error.log
+log/*
+dump.rdb
+release.js
+.project
+.env
+yarn.lock
