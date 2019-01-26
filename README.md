@@ -56,7 +56,7 @@ yarn add -D babel-polyfill babel-plugin-transfrom-runtime
         "env"
     ],
     "plugins": [
-       "transform-runtime"
+      "transform-runtime"
     ]
 }
 ```
