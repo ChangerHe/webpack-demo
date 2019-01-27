@@ -1,19 +1,19 @@
 # webpack-demo
 
-一个基于webpack4所一步一步搭建的个人脚手架项目
+一个基于 webpack4 所一步一步搭建的个人脚手架项目
 
 # 配置详细步骤
 
 ## 零配置启动
 
-需要零配置启动, 我们需要在工程目录中下载webpack的依赖
+需要零配置启动, 我们需要在工程目录中下载 webpack 的依赖
 
 ```
 npm init -y
 yarn add webpack webpack-cli -D
 ```
 
-在package.json文件中, 我们配置一下运行的配置文件
+在 package.json 文件中, 我们配置一下运行的配置文件
 
 ```
 "scripts": {
@@ -22,19 +22,19 @@ yarn add webpack webpack-cli -D
 },
 ```
 
-webpack4自带了代码压缩混淆的功能, 直接设置其mode为production, 此时会自动进行代码混淆
+webpack4 自带了代码压缩混淆的功能, 直接设置其 mode 为 production, 此时会自动进行代码混淆
 
-在零配置情况下, webpack会自动将`/src/index.js`作为入口文件, 将代码处理后将会输出到`/dist/main.js`中
+在零配置情况下, webpack 会自动将`/src/index.js`作为入口文件, 将代码处理后将会输出到`/dist/main.js`中
 
-## 在项目中引入babel来进行代码兼容转换
+## 在项目中引入 babel 来进行代码兼容转换
 
 ```
 yarn add  babel-core babel-loader babel-preset-env -D
 ```
 
-同样的, 我们在根目录中新建一个babel的配置文件`.babelrc`
+同样的, 我们在根目录中新建一个 babel 的配置文件`.babelrc`
 
-此时建议锁定版本, babel可能因为相互依赖的问题而导致项目编译失败
+此时建议锁定版本, babel 可能因为相互依赖的问题而导致项目编译失败
 
 ```
 "babel-core": "^6.26.3",
@@ -42,13 +42,13 @@ yarn add  babel-core babel-loader babel-preset-env -D
 "babel-preset-env": "^1.7.0",
 ```
 
-## 使用babel-polyfill解决兼容问题
+## 使用 babel-polyfill 解决兼容问题
 
 ```
 yarn add -D babel-polyfill babel-plugin-transfrom-runtime
 ```
 
-同样的, 要让配置生效, 我们需要在.babelrc中使用这个插件
+同样的, 要让配置生效, 我们需要在.babelrc 中使用这个插件
 
 ```
 {
@@ -61,13 +61,13 @@ yarn add -D babel-polyfill babel-plugin-transfrom-runtime
 }
 ```
 
-## 编译css
+## 编译 css
 
-这一步我们对css进行编译, 其中包含自动添加前缀和抽取css到独立文件
+这一步我们对 css 进行编译, 其中包含自动添加前缀和抽取 css 到独立文件
 
-- 在webpack4之前我们都是使用的`extract-text-webpack-plugin`来处理css文件, 现在webpack4的推荐依赖是`mini-css-extract-plugin`
+- 在 webpack4 之前我们都是使用的`extract-text-webpack-plugin`来处理 css 文件, 现在 webpack4 的推荐依赖是`mini-css-extract-plugin`
 
-同时, 我们需要添加相应的loader方便对文件进行处理
+同时, 我们需要添加相应的 loader 方便对文件进行处理
 
 ```
 yarn add -D mini-css-extract-plugin postcss-loader css-loader style-loader
@@ -112,7 +112,7 @@ module.exports = {
 }
 ```
 
-## 复制并压缩html文件
+## 复制并压缩 html 文件
 
 ```
 yarn add -D html-loader html-webpack-plugin
@@ -185,7 +185,7 @@ module.exports = {
 }
 ```
 
-## dev模式下实现自动刷新
+## dev 模式下实现自动刷新
 
 ```
 yarn add -D webpack-dev-server
@@ -198,7 +198,7 @@ yarn add -D webpack-dev-server
 }
 ```
 
-## 引入react相关内容
+## 引入 react 相关内容
 
 ```
 yarn add react react-dom
@@ -251,3 +251,4 @@ module.exports = (env, argv) => {
     }
 };
 ```
+

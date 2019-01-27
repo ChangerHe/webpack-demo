@@ -12,6 +12,8 @@ class App extends React.Component {
       <div className={styles.index}>
         <div className="test">112233</div>
         <img className={styles.test} src={APP_LOGO} />
+        <div className="logo"></div>
+        <div style={styles.logo}></div>
       </div>
     )
   }
