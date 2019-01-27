@@ -14,8 +14,9 @@ class App extends React.Component {
         <div className={styles.test}>112233</div>
         <img className={styles.test} src={APP_LOGO} />
         <div className="logo"></div>
-        <div className="juejin-logo"></div>
+        <div className={styles['juejin-logo']}></div>
         <div className={styles.logo}></div>
+        <div styleName="logo"></div>
       </div>
     )
   }

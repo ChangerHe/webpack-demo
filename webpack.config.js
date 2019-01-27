@@ -22,7 +22,10 @@ module.exports = (env, argv) => {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
           use: {
-            loader: "babel-loader?cacheDirectory" // 通过cacheDirectory选项开启支持缓存
+            loader: "babel-loader?cacheDirectory", // 通过cacheDirectory选项开启支持缓存
+            options: {
+              presets: ['@babel/preset-env']
+            }
           }
         }, {
           test: /\.less$/,
