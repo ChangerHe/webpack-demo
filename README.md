@@ -301,6 +301,59 @@ module.exports = merge(prodWebpackConfig, {
 })
 ```
 
+## 更新至babel8
+
+```
+yarn add -D  babel-loader @babel/core @babel/preset-env @babel/runtime @babel/plugin-transform-runtime
+```
+
+编译js
+
+```
+{
+    test: /\.js$/,
+    exclude: /(node_modules|bower_components)/,
+    use: {
+        loader: 'babel-loader?cacheDirectory', // 通过cacheDirectory选项开启支持缓存
+        options: {
+            presets: ['@babel/preset-env']
+        }
+    }
+},
+```
+
+增加.babelrc配置文件
+
+```
+{
+    "presets": [
+        "@babel/preset-env",
+        "@babel/preset-react"
+    ],
+    "plugins": [
+        [
+            "@babel/plugin-transform-runtime",
+            {
+                "corejs": false,
+                "helpers": true,
+                "regenerator": true,
+                "useESModules": false,
+                "absoluteRuntime": "@babel/runtime"
+            }
+        ]
+    ]
+}
+```
+
+此时可移除掉原有的babel7所独有的依赖
+
+```
+- babel-core
+- babel-plugin-transform-runtime
+```
+
+上面增加了babel对react的编译支持, 如果使用的vue等, 可以去除掉, 换成响应的转码器
+
 ## 引入 react 相关内容
 
 ```
