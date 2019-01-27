@@ -6,7 +6,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open",
     "dev": "cross-env NODE_ENV=development webpack --mode development --progress",
-    "build": "cross-env NODE_ENV=production webpack --mode production"
+    "build": "cross-env NODE_ENV=production webpack --mode production",
+    "build:analyze": "cross-env NODE_ENV=production webpack --config webpack.analyze.config.js --mode production --report"
   },
   "keywords": [],
   "author": "",
@@ -36,9 +37,12 @@
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
+    "url-loader": "^1.1.2",
     "webpack": "^4.29.0",
+    "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.2.1",
-    "webpack-dev-server": "^3.1.14"
+    "webpack-dev-server": "^3.1.14",
+    "webpack-merge": "^4.2.1"
   },
   "dependencies": {
     "react": "^16.7.0",

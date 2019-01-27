@@ -9,8 +9,16 @@
 
 
 .logo {
-  background: url('../public//微信图片_20190124111920.png') no-repeat;
+  background: url('../public/微信图片_20190124111920.png') no-repeat;
   width: 100px;
   height: 100px;
+  background-size: contain;
+}
+
+
+.juejin-logo {
+  background: url('../public/logo.a7995ad.svg') no-repeat;
+  width: 200px;
+  height: 200px;
   background-size: contain;
 }

@@ -22,7 +22,7 @@ module.exports = (env, argv) => {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
           use: {
-            loader: "babel-loader"
+            loader: "babel-loader?cacheDirectory" // 通过cacheDirectory选项开启支持缓存
           }
         }, {
           test: /\.less$/,
@@ -76,8 +76,9 @@ module.exports = (env, argv) => {
           test: /\.(png|jp(e)?g|gif|svg)$/,
           use: [
             {
-              loader: 'file-loader',
+              loader: 'url-loader',
               options: {
+                limit: 10000,
                 name: '[name]-[hash:5].[ext]',
                 outputPath: 'img/'
               }
@@ -106,6 +107,16 @@ module.exports = (env, argv) => {
               }
             }
           ]
+        }, {
+          test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+          loader: 'url-loader',
+          options: {
+            // 文件大小小于limit参数，url-loader将会把文件转为DataUR
+            limit: 10000,
+            name: '[name]-[hash:5].[ext]',
+            output: 'fonts/',
+            // publicPath: '', 多用于CDN
+          }
         }
       ]
     },
@@ -125,6 +136,7 @@ module.exports = (env, argv) => {
     optimization: {
       minimizer: [// 压缩CSS
         new OptimizeCSSAssertsPlugin({})]
-    }
+    },
+    devtool: devMode ? 'inline-source-map' : ''
   }
 }

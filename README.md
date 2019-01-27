@@ -172,12 +172,53 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jp(e)?g|gif|svg)$/,
         use: [
           {
             loader: 'file-loader',
-            options: {}
+            options: {
+                limit: 10000,
+                // 定义文件输出名称
+                name: '[name]-[hash:5].[ext]',
+                // 输出路径为img文件夹下
+                outputPath: 'img/'
+            }
+          }, {
+              // 处理图片压缩等
+              loader: 'image-webpack-loader',
+              options: {
+                mozjpeg: {
+                  progressive: true,
+                  quality: 65
+                },
+                // optipng.enabled: false will disable optipng
+                optipng: {
+                  enabled: false
+                },
+                pngquant: {
+                  quality: '65-90',
+                  speed: 4
+                },
+                gifsicle: {
+                  interlaced: false
+                },
+                // the webp option will enable WEBP
+                webp: {
+                  quality: 75
+                }
+              }
+          }, {
+              test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                loader: 'url-loader',
+                options: {
+                    // 文件大小小于limit参数，url-loader将会把文件转为DataURL
+                    limit: 10000,
+                    name: '[name]-[hash:5].[ext]',
+                    output: 'fonts/',
+                    // publicPath: '', 多用于CDN
+                }
           }
+
         ]
       }
     ]
@@ -196,6 +237,68 @@ yarn add -D webpack-dev-server
   "start": "webpack-dev-server --mode development --open",
   "build": "webpack --mode production"
 }
+```
+
+## 区分生产还是开发环境
+
+通常情况下, 我们需要配置webpack在dev模式下和prod模式下 的不同参数, 这个时候我们可以定义三个文件
+
+```
+webpack.base.config.js
+webpack.dev.config.js
+webpack.prod.config.js
+```
+
+我们通过`webpack-merge`插件来实现dev和prod中都基于原本的webpack.base来进行配置
+
+```
+const merge = require('webpack-merge')
+const baseWebpackConfig = require('./webpack.base.config.js')
+
+module.exports = merge(baseWebpackConfig, {
+    // custom configs
+})
+```
+
+## webpack配置js使用sourceMap
+
+```
+devtool: 'inline-source-map'
+```
+
+## 压缩less/sass的css代码
+
+```
+optimization: {
+    minimizer: [// 压缩CSS
+    new OptimizeCSSAssertsPlugin({})]
+},
+```
+
+## 打包分析
+
+```
+yarn add -D webpack-bundle-analyzer
+```
+
+在package.json中加入如下命令
+
+```
+"build:report": "cross-env NODE_ENV=production webpack --mode production --config webpack.analysis.config.js --report"
+```
+
+建议与原有代码分离开来进行分析, 因此我们额外增加一个`webpack.analysis.config.js`文件, 并合并入prod的参数
+
+```
+const merge = require('webpack-merge')
+const prodWebpackConfig = require('./webpack.prod.config.js')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
+module.exports = merge(prodWebpackConfig, {
+  plugins: [
+    new BundleAnalyzerPlugin() // 打包分析
+  ]
+})
 ```
 
 ## 引入 react 相关内容
