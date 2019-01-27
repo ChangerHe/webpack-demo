@@ -10,7 +10,8 @@ class App extends React.Component {
   render() {
     return (
       <div className={styles.index}>
-        <div className="test">112233</div>
+        <div className={styles.title}>abc</div>
+        <div className={styles.test}>112233</div>
         <img className={styles.test} src={APP_LOGO} />
         <div className="logo"></div>
         <div className="juejin-logo"></div>

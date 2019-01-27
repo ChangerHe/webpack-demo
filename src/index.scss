@@ -5,6 +5,17 @@
     width: 400px;
     height: 400px;
   }
+
+  .className {
+    background-color: blue;
+  }
+}
+
+
+
+.title {
+  composes: className;
+  color: red;
 }
 
 
