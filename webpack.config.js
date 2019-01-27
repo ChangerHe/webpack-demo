@@ -30,7 +30,7 @@ module.exports = (env, argv) => {
             devMode
               ? 'style-loader'
               : MiniCssExtractPlugin.loader,
-            'css-loader',
+            'css-loader?modules',
             'postcss-loader',
             'less-loader'
           ]
@@ -44,7 +44,9 @@ module.exports = (env, argv) => {
             }, {
               loader: 'css-loader',
               options: {
-                sourceMap: true
+                sourceMap: true,
+                modules: true,
+                localIdentName: '[name]__[local]-[hash:base64:5]'
               }
             }, {
               loader: 'postcss-loader',

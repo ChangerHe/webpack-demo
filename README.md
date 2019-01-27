@@ -355,3 +355,43 @@ module.exports = (env, argv) => {
 };
 ```
 
+以上的配置你会发现, 我们无法实现像之前在脚手架中的一样, 正常的使用`css-modules`了, 也就是我们在react的jsx中`<div className={styles.index} />`这样写就完全无法生效了, 此时是因为我们在css-loader中没有将css转化为module的形式
+
+现在看一个更加个性化的配置方式
+
+```
+{
+    test: /\.(sc|sa|c)ss$/,
+    use: [
+    {
+        loader: devMode
+        ? 'style-loader'
+        : MiniCssExtractPlugin.loader
+    }, {
+        loader: 'css-loader',
+        options: {
+        sourceMap: true,
+        // 开启css的module形式
+        modules: true,
+        // 定义module的名称
+        localIdentName: '[name]__[local]-[hash:base64:5]'
+        }
+    }, {
+        loader: 'postcss-loader',
+        // 更加个性化的配置方式
+        options: {
+        ident: 'postcss',
+        sourceMap: true,
+        plugins: loader => [// 可以配置多个插件
+            require('autoprefixer')({browsers: [' > 0.15% in CN ']})]
+        }
+    }, {
+        loader: 'sass-loader',
+        options: {
+        sourceMap: true
+        }
+    }
+    ]
+}
+```
+
