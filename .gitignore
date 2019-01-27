@@ -13,3 +13,4 @@ release.js
 .project
 .env
 yarn.lock
+.dist/*
