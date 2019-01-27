@@ -10,6 +10,7 @@
         "useESModules": false,
         "absoluteRuntime": "@babel/runtime"
       }
-    ]
+    ],
+    ["react-css-modules"]
   ]
 }

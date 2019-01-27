@@ -16,7 +16,7 @@ class App extends React.Component {
         <div className="logo"></div>
         <div className={styles['juejin-logo']}></div>
         <div className={styles.logo}></div>
-        <div styleName="logo"></div>
+        <div styleName="juejinlogo"></div>
       </div>
     )
   }
