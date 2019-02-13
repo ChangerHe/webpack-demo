@@ -1,32 +1,44 @@
 const path = require('path')
+const webpack = require('webpack');
+const HappyPack = require('happypack');
+const os = require('os');
+
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const OptimizeCSSAssertsPlugin = require('optimize-css-assets-webpack-plugin')
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+
 console.log(process.env.NODE_ENV, 'process.env.NODE_ENV')
 const devMode = process.env.NODE_ENV !== 'production'
 module.exports = (env, argv) => {
-  console.log("env =========================", env)
-  console.log("argv =========================", argv)
   return {
     devServer: {
       port: 3000, //端口号
     },
-    entry: [
-      "babel-polyfill", path.join(__dirname, './src/index.js')
-    ],
+    // entry: [   "babel-polyfill", path.join(__dirname, './src/index.js') ],
+    entry: {
+      pageOne: [
+        "babel-polyfill", path.join(__dirname, './src/index.js')
+      ],
+      pageTwo: [
+        "babel-polyfill", path.join(__dirname, './src/index1.js')
+      ]
+    },
     module: {
       rules: [
         {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
-          use: {
-            loader: "babel-loader?cacheDirectory", // 通过cacheDirectory选项开启支持缓存
-            options: {
-              presets: ['@babel/preset-env']
-            }
-          }
+          // use: {
+          //   loader: "babel-loader?cacheDirectory", // 通过cacheDirectory选项开启支持缓存
+          //   options: {
+          //     presets: ['@babel/preset-env']
+          //   }
+          // }
+          use: "happypack/loader?id=happyBabel"
         }, {
           test: /\.less$/,
           use: [
@@ -136,12 +148,49 @@ module.exports = (env, argv) => {
       }),
       new HtmlWebPackPlugin({title: 'Webapck-demo by ChangerHe', template: "./public/index.html", filename: "./index.html"}),
       // TODO fix clean dist when devloping
-      new CleanWebpackPlugin(['dist'])
+      new CleanWebpackPlugin(['dist']),
+      new webpack
+        .optimize
+        .SplitChunksPlugin({
+          chunks: "all",
+          minSize: 20000,
+          minChunks: 1,
+          maxAsyncRequests: 5,
+          maxInitialRequests: 3,
+          name: true
+        }),
+      new webpack.DllReferencePlugin({
+        context: __dirname, // 与DllPlugin中的那个context保持一致
+        /** 
+            下面这个地址对应webpack.dll.config.js中生成的那个json文件的路径
+            这样webpack打包时，会检测此文件中的映射，不会把存在映射的包打包进bundle.js
+        **/
+        manifest: require('./dll/vendor-manifest.json')
+      }),
+      new AddAssetHtmlPlugin({ filepath: require.resolve('./dll/vendor.dll.js') }),
+      new HappyPack({
+          //用id来标识 happypack处理那里类文件
+        id: 'happyBabel',
+        //如何处理  用法和loader 的配置一样
+        loaders: [{
+          loader: "babel-loader", // 通过cacheDirectory选项开启支持缓存
+          options: {
+            cacheDirectory: true,
+            presets: ['@babel/preset-env']
+          }
+        }],
+        //共享进程池
+        threadPool: happyThreadPool,
+        //允许 HappyPack 输出日志
+        verbose: true,
+      })
     ],
     optimization: {
       minimizer: [// 压缩CSS
-        new OptimizeCSSAssertsPlugin({})]
+        new OptimizeCSSAssertsPlugin({})],
     },
-    devtool: devMode ? 'inline-source-map' : ''
+    devtool: devMode
+      ? 'inline-source-map'
+      : ''
   }
 }
